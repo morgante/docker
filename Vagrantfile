@@ -204,3 +204,7 @@ if !PRIVATE_NETWORK.nil?
   end
 end
 
+# Docker client exposure
+Vagrant::VERSION >= "1.1.0" and Vagrant.configure("2") do |config|
+  config.vm.network :forwarded_port, :host => 4244, :guest => 4243, auto_correct: true
+end
