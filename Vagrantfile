@@ -208,3 +208,8 @@ end
 Vagrant::VERSION >= "1.1.0" and Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, :host => 4244, :guest => 4243, auto_correct: true
 end
+
+# Shared code
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder "/Users/mpell/code", "/var/code"
+end
