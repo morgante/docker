@@ -26,7 +26,7 @@ Usage
 
 6. Restart Docker:
 		
-		sudo service restart docker
+		sudo service docker restart
 
 7. Add this line to your .profile on the host machine:
 
