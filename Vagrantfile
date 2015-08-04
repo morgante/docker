@@ -1,6 +1,8 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+$expose_docker_tcp=48002
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "phusion-open-ubuntu-14.04-amd64"
   config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vbox.box"
@@ -18,5 +20,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Add vagrant user to the docker group
     pkg_cmd << "usermod -a -G docker vagrant; "
     config.vm.provision :shell, :inline => pkg_cmd
+  end
+
+  # Copy docker config
+  config.vm.provision "file", source: "docker.conf", destination: "/home/vagrant/docker.conf"
+  config.vm.provision "shell", inline: "sudo cp /home/vagrant/docker.conf /etc/default/docker"
+
+  if $expose_docker_tcp
+    config.vm.network "forwarded_port", guest: 2375, host: $expose_docker_tcp, auto_correct: true
+  end
+
+  # Expose a bunch of ports for usage
+  forward_ports = [*48100..48900]
+  forward_ports.each do |port|
+    config.vm.network :forwarded_port, :host => port, :guest => port, auto_correct: true
   end
 end
