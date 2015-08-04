@@ -35,4 +35,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   forward_ports.each do |port|
     config.vm.network :forwarded_port, :host => port, :guest => port, auto_correct: true
   end
+
+  # Set up a host-only network
+  ip = "172.17.8.100"
+  config.vm.network :private_network, ip: ip
+
+  # Expose code directory
+  config.vm.synced_folder "~/code/", "/home/vagrant/code", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp,actimeo=2']
 end
