@@ -30,7 +30,8 @@ Usage
 
 7. Add this line to your .profile on the host machine:
 
-		export DOCKER_HOST="tcp://0.0.0.0:4244"
+		export DOCKER_HOST=tcp://localhost:48002
+		export DOCKER_TLS_VERIFY=
 
 8. From the host machine, confirm Docker is accessible:
 
